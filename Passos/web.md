@@ -1,72 +1,66 @@
-<p align="center">
-  <img src="../mobile/src/assets/logo.svg" alt="Next Level Week Copa Logo"/>
-</p>
+# Aula 1 web
+# Setup Frontend
 
-# Passo a Passo 
-### Todos os comandos e instalações necessários para o projeto web.
-
-
-- Rodar a aplicação:
+- Começamos criando o projeto com o framwork react, o [Vite.](https://vitejs.dev/guide/):
+```bash
+npm create vite@latest
+```
+- React, Vite, typescript
+nomear como web o projeto react frontend.
+```
+instalar as dependências:
+```bash
+npm install
+```
+rodar a aplicação react instalada:
 ```bash
 npm run dev
 ```
-- Instalações
-```bash
-npm install -D tailwindcss postcss autoprefixer
-```
-Cria o arquivo tailwindcss:
-```bash
-npx tailwindcss init -p
-```
+criamos uma pasta component e dentro dela criamos o component Habit
 
-Configuração do arquivo tailwindcss, passando onde estrá os arquivos estilizados:
+instalamos o [tailwindcss:](https://tailwindcss.com/docs/installation)
+
 ```bash
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './src/**/*.tsx',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
+npm install -D tailwindcss
+```
+no component habit.tsx:
+```bash
+interface HabitProps {
+    completed?: number
+}
+
+export function Habit(props: HabitProps) {
+    return (
+    <div className="bg-zinc-900 w-10 text-white rounded m-2 flex items-center justify-center" >
+        {props.completed}
+    </div>
+    )
 }
 ```
-- Criat uma pasta styles com um arquivo global.css.
-Impotar neste arquivo:
-```bash
-@tailwind base;
-@tailwind utilities;
-@tailwind components;
-```
-fazer o import na página que será aplicada o css, no caso index.tsx:
-```bash
-import '../styles/global.css'
-```
+o arquivo app.tsx:
 
-na tag que será aplicado o css colocar o className="text-"
-Dar Ctrl+Space após - ,para escolher a cor.
+```bash
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import './App.css'
+import { Habit } from './components/habit'
 
 
-- Definir fonte padrões com tailwindcss
-  no arquivo tailwindcss.config.js
-```bash
- theme: {
-    extend: {
-    fontFamily: {
-      sans: 'Roboto, sans-serif'
-    }
-    },
-  },
-```
-Intalar bliblioteca:
+function App() {
+  const [count, setCount] = useState(0)
 
-Axios
-```bash
-npm i axios
+  return (
+  <div>
+    <Habit completed={3} />
+    <Habit completed={10}/>
+    <Habit completed={20}/>
+    <Habit completed={30}/>
+  </div>
+      
+      
+  )
+}
+
+export default App
+
 ```
-Sweetalert2
-```bash
-npm i sweetalert2
-```
----

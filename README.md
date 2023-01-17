@@ -1,4 +1,4 @@
-<h1 align="center"> NLW-10 | Trilha Ignite </h1>
+<h1 align="center"> NLW-11 | Trilha Ignite </h1>
 <p align="center">
 
   ![](/img/setup.png)

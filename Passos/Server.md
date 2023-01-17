@@ -1,7 +1,7 @@
 <!-- <p align="center">
   <img src="../mobile/src/assets/logo.svg" alt="Next Level Week Copa Logo"/>
 </p> -->
-
+# Aula 1 server-node
 # Passo a Passo 
 ### Todos os comandos e instalações necessários para o projeto do server .
 
@@ -216,23 +216,7 @@ app.register(cors,{
 a bliblioteca cors é utilizada para definição de quais aplicações estarão aptas a consumir os dados do backend,
 é uma medida de segurança para a aplicação.
 ---
-# Setup Frontend
 
-- Começamos criando o projeto com o framwork react, o [Vite.](https://vitejs.dev/guide/):
-```bash
-npm create vite@latest
-```
-- React, Vite, typescript
-nomear como web o projeto react frontend.
-```
-instalar as dependências:
-```bash
-npm install
-```
-rodar a aplicação react instalada:
-```bash
-npm run dev
-```
 
 ```bash
 
