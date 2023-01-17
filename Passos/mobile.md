@@ -1,7 +1,7 @@
 # Aula 1 mobile
 <!--ref: https://github.com/esbnet-->
 
-Instalação [Expo:[(https://react-native.rocketseat.dev/expo-managed/windows)
+Instalação [Expo:](https://react-native.rocketseat.dev/expo-managed/windows)
 ```bash
 npm install -g expo-cli
 ```
