@@ -46,7 +46,7 @@ o Projeto é uma aplicação de resgistro de hábitos, uma aplicação completa,
 
 Você pode visualizar o layout do projeto através [DESSE LINK](https://efficient-sloth-d85.notion.site/NLW-11-Setup-4a8623c9e0bf415dbd5fdbe79f387a6e). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
 
-###  Resultado Aplicação WEB
+###  Resultado Aplicação WEB & MOBILE
 ![](/img/habits.png)
 
 

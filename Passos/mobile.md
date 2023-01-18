@@ -1,5 +1,5 @@
 # Aula 1 mobile
-<!--ref: https://github.com/esbnet-->
+<!--// ref: https://github.com/esbnet-->
 
 Instalação [Expo:](https://react-native.rocketseat.dev/expo-managed/windows)
 ```bash
@@ -90,3 +90,6 @@ Customizar statusbar, colocr dentro da tag:
     </View>
   );
 ```
+---
+
+# Aula 02

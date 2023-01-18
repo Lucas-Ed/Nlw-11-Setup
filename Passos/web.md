@@ -64,3 +64,19 @@ function App() {
 export default App
 
 ```
+
+# Aula 02
+
+## Estrutura do home page.
+
+## Componente Header
+
+## Tabela de hábitos diários
+
+## Geração de range de dias
+
+## Preenchimenro de dias no fim
+
+## Adicionando scroll horizontal
+
+
