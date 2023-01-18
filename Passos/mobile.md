@@ -72,8 +72,7 @@ export function Loading() {
     </View>
   )
 }
-```
-agora faça o import de Loading no arquivo App.tsx:
+```- Agora faça o import de Loading no arquivo App.tsx:
 ```bash
 import { Loading } from './src/components/Loading';
 ```
@@ -93,3 +92,301 @@ Customizar statusbar, colocr dentro da tag:
 ---
 
 # Aula 02
+- Instalar a lib [Nativewind:](https://www.nativewind.dev/quick-starts/expo)
+  
+```bash
+npm i nativewind
+
+npm i --dev tailwindcss
+```
+- Criar o arquivo do tailwind:
+
+```bash
+npx tailwindcss init
+```
+
+- Incluir as configurações no tailwind:
+
+```bash
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./App.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}"
+  ],
+  theme: {
+    extend: {
+      colors: {
+        background: '#09090a',
+      },
+      fontFamily: {
+        regular: 'Inter_400Regular',
+        semibold: 'Inter_600SemiBold',
+        bold: 'Inter_700Bold',
+        extrabold: 'Inter_800ExtraBold'
+      }
+    },
+  },
+  plugins: [],
+}
+```
+- Modifique seu babel.config.js
+
+```bash
+plugins: ["nativewind/babel"],
+```
+- Iniciar a aplicação:
+
+```bash
+npx expo start
+```
+## Tipar o className para utilizar o Tailwindcss,  Criar a Home
+- Crie uma pasta de nome screns dentro de src e crie o arquivo, Home.tsx
+- e coloque o código:
+
+```bash
+import { Text, View, ScrollView } from 'react-native';
+
+import { generateRangeDatesFromYearStart } from '../utils/generate-range-between-dates';
+
+import { Header } from '../components/Header';
+import { HabitDay, DAY_SIZE } from '../components/HabitDay';
+
+const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+const datesFromYearStart = generateRangeDatesFromYearStart();
+const minimunSummaryDatesSizes = 18 * 5;
+const amountOfDaysToFill = minimunSummaryDatesSizes - datesFromYearStart.length
+
+export function Home() {
+  return (
+    <View className='flex-1 bg-background px-8 pt-16'>
+      <Header />
+
+      <View className="flex-row mt-6 mb-2">
+        {
+          weekDays.map((weekDay, i) => (
+            <Text 
+              key={`${weekDay}-${i}`}
+              className="text-zinc-400 text-xl font-bold text-center mx-1"
+              style={{ width: DAY_SIZE }}
+            >
+              {weekDay}
+            </Text>
+          ))
+        }
+      </View>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        <View className='flex-row flex-wrap'>
+          {
+            datesFromYearStart.map(date => (
+            <HabitDay key={date.toISOString()} />
+            ))
+          }
+
+          {
+            amountOfDaysToFill > 0 && Array
+            .from({ length: amountOfDaysToFill })
+            .map((_, index) => (
+              <View 
+                key={index}
+                className="bg-zinc-900 rounded-lg border-2 m-1 border-zinc-800 opacity-40"
+                style={{ width: DAY_SIZE, height: DAY_SIZE }}
+              />
+            ))
+          }
+        </View>
+      </ScrollView>
+
+    </View>
+  )
+} 
+```
+- Crie uma pasta de nome @types dentro de src e crie o arquivo app.d.ts, coloque o código:
+
+```bash
+/// <reference types="nativewind/types" />
+```
+Assim o typescript entende como o className deve se comportar na aplicação.
+
+- Instalar a extensão no VsCode Tailwind CSS IntelliSense
+
+
+## Criar o component Header
+
+- Crie um componente de nome Header.tsx, e coloque o código:
+
+```bash
+import { View, TouchableOpacity, Text } from "react-native";
+import { Feather } from '@expo/vector-icons';
+import colors from 'tailwindcss/colors';
+
+import Logo from '../assets/logo.svg';
+
+export function Header() {
+  return (
+    <View className="w-full flex-row items-center justify-between">
+      <Logo />
+
+      <TouchableOpacity 
+        activeOpacity={0.7}
+        className="flex-row h-11 px-4 border border-violet-500 rounded-lg items-center"  
+      >
+        <Feather 
+          name="plus"
+          color={colors.violet[500]}
+          size={20}
+        />
+
+        <Text className="text-white ml-3 font-semibold text-base">
+          Novo
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+```
+
+### Incluir o logo e utilizar SVG como componente
+
+```bash
+npx expo install react-native-svg
+```
+### Definir a tipagem do SVG como componente
+
+- Instalar o [svg-transformer:](https://github.com/kristerkari/css-to-react-native-transform)
+```bash
+npm i react-native-svg-transformer --save-dev
+```
+- Seguindo a documentação do github da lib, crie um arquivo no diretório raiz junto com,tailwind.config.js de nome: metro.config.js e coloque o código que indica no repositório:
+
+```bash
+const { getDefaultConfig } = require("expo/metro-config");
+
+module.exports = (() => {
+  const config = getDefaultConfig(__dirname);
+
+  const { transformer, resolver } = config;
+
+  config.transformer = {
+    ...transformer,
+    babelTransformerPath: require.resolve("react-native-svg-transformer"),
+  };
+  config.resolver = {
+    ...resolver,
+    assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
+    sourceExts: [...resolver.sourceExts, "svg"],
+  };
+
+  return config;
+})();
+```
+- Adicionar o svg no Header.tsx:
+
+```bash
+import Logo from '../assets/logo.svg';
+
+// Pra utilizar como componente por a tag:
+ <Logo />
+```
+
+- Dentro de @types crie o arquivo, svg.d.ts e coloque o código:
+
+```bash
+declare module "*.svg" {
+  import React from 'react';
+  import { SvgProps } from "react-native-svg";
+  const content: React.FC<SvgProps>;
+  export default content;
+}
+```
+### Utilizar Icones do vector-icons
+
+- fazer o import:
+
+```bash
+import { Feather } from '@expo/vector-icons';
+```
+## Criar o componente HabitDay
+
+
+```bash
+import { Dimensions, TouchableOpacity } from "react-native";
+
+const WEEK_DAYS = 7;
+const SCREEN_HORIZONTAL_PADDING = (32 * 2) / 5;
+
+export const DAY_MARGIN_BETWEEN = 8;
+export const DAY_SIZE =  (Dimensions.get('screen').width / WEEK_DAYS) - (SCREEN_HORIZONTAL_PADDING + 5);
+
+export function HabitDay() {
+  return (
+    <TouchableOpacity 
+      className="bg-zinc-900 rounded-lg border-2 m-1 border-zinc-800"
+      style={{ width: DAY_SIZE, height: DAY_SIZE }}
+      activeOpacity={0.7}
+    />
+  )
+}
+```
+### Instalar o dayjs para manipular as datas
+
+```bash
+npm i dayjs
+```
+### Definir o padrão de datas pt-br
+- Dentro do diretório src crie a pasta  lib e crie um arquivo de nome dayjs.ts, coloque o código:
+
+```bash
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+
+dayjs.locale('pt-br');
+``` 
+### Reaproveitando o generate-range-between-dates.ts
+
+- Em Home.tsx faça o import:
+
+```bash
+import { generateRangeDatesFromYearStart } from '../utils/generate-range-between-dates';
+``` 
+- Dentro de src crie a pasta utils e o arquivo generate-range-between-dates.ts, coloque o código:
+
+```bash
+import dayjs from 'dayjs'
+
+export function generateRangeDatesFromYearStart() {
+  const startDate = dayjs().startOf('year')
+  const endDate = new Date()
+
+  let dateRange = []
+  let compareDate = startDate
+
+  while (compareDate.isBefore(endDate)) {
+    dateRange.push(compareDate.toDate())
+    compareDate = compareDate.add(1, 'day')
+  }
+
+  return dateRange
+}
+``` 
+- Ativar o scrool da rolagem, fazer o import do ScrollView em Home.tsx:
+
+```bash
+import { Text, View, ScrollView } from 'react-native';
+``` 
+
+- No arquivo Home.tsx,na view tem a key ativa o scroll
+
+```bash
+key={`${weekDay}-${i}`}
+``` 
+- Em app.tsx fazer o import do dayjs:
+
+```bash
+import './src/lib/dayjs';
+``` 
+

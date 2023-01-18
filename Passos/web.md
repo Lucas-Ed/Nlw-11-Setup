@@ -392,6 +392,7 @@ const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length
           )
         })}
 ```
+# Aula 03
 ## Adicionando scroll horizontal
 
 
