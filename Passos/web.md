@@ -243,11 +243,155 @@ export function App() {
 ```
 
 ## Tabela de hábitos diários
+- Começamos criando um novo componente de some SummaryTable.tsx
+  
+- Importamos o componente dentro de app.tsx:
+```bash
+<SummaryTable />
+```
+- Criar a tabela:
+```bash
+export function SummaryTable() {
+  return (
+    <div className="w-full flex">
+      <div className="grid grid-rows-7 grid-flow-row gap-3">
+        {weekDays.map((weekDay, i) => {
+          return (
+            <div
+              key={`${weekDay}-${i}`}
+              className="text-zinc-400 text-xl h-10 w-10 font-bold flex items-center justify-center"
+            >
+              {weekDay}
+            </div>
+          )
+        })}
+      </div>
+  );
+}
 
-## Geração de range de dias
+```
+- No tailwind.config.js definir as rows:
+  
+```bash
+ gridTemplateRows:{
+            7:'repeat(7, minmax(0, 1fr))'
+        },
+```
+- Crie um array para definir os dias da semana:
 
+```bash
+const weekDays = [
+  'D',
+  'S',
+  'T',
+  'Q',
+  'Q',
+  'S',
+  'S',
+];
+```
+- E passe o weekDays dentro da div:
+
+```bash
+<div className="grid grid-rows-7 grid-flow-row gap-3">
+        {weekDays.map((weekDay, i) => {
+          return (
+            <div
+              key={`${weekDay}-${i}`}
+              className="text-zinc-400 text-xl h-10 w-10 font-bold flex items-center justify-center"
+            >
+              {weekDay}
+            </div>
+```
+
+## Criação da tabela (dias).
+
+```bash
+ <div className="grid grid-rows-7 grid-flow-col gap-3">
+        {summaryDates.map((date) => {
+          return (
+            <HabitDay key={date.toString()} />
+          )
+        })}
+
+        {amountOfDaysToFill > 0 && Array.from({ length: amountOfDaysToFill }).map((_, i) => {
+          return (
+            <div key={i} className="w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed" />
+          )
+        })}
+      </div>
+    </div>
+```
+
+- Apague o componente habit e crie o HabitDay e coloque o código:
+
+```bash
+// interface HabitDayProps {
+//   completed: number
+// }
+
+export function HabitDay() {
+  return (
+    <div className="w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg"></div>
+  );
+}
+
+```
+## Geração de range(Tabela) de dias
+- Dentro de src crie uma pasta de nome utils e dentro crie um arquivo de nome, generate-dates-from-year-beginning.ts
+
+- No arquivo gere todas as datas:
+
+```bash
+import dayjs from 'dayjs'
+
+export function generateDatesFromYearBeginning() {
+  const firstDayOfTheYear = dayjs().startOf('year')
+  const today = new Date()
+
+  const dates = []
+  let compareDate = firstDayOfTheYear
+
+  while (compareDate.isBefore(today)) {
+    dates.push(compareDate.toDate())
+    compareDate = compareDate.add(1, 'day')
+  }
+
+  return dates
+}
+
+```
+-  Em summaryTable.tsx adicione:
+
+```bash
+const summaryDates = generateDatesFromYearBeginning()
+```
+- Dentro da tabela puxar os dias:
+
+```bash
+{summaryDates.map((date) => {
+          return (
+            <HabitDay key={date.toString()} />
+          )
+        })}
+```
 ## Preenchimenro de dias no fim
+- Gera datas para a tabela não ficar vazia, em SummaryTable.tsx:
 
+```bash
+const minimumSummaryDatesSize = 18 * 7 // 18 weeks
+const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length
+```
+
+- Para crias vários quadradinhos:
+
+```bash
+        {amountOfDaysToFill > 0 && Array.from({ length: amountOfDaysToFill }).map((_, i) => {
+          return (
+            <div key={i} className="w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed" />
+          )
+        })}
+```
 ## Adicionando scroll horizontal
 
 
