@@ -547,10 +547,122 @@ app.listen({port: 3333,
 ```
 ## Criação de novas Rotas do backend
 
+- Instalar a lib de validação zod:
+
+```bash
+npm i zod
+```
+
+- Em routes.ts aplicar a validação:
+
+```bash
+import { z } from "zod";
+
+app.post("/habits", async (req) => {
+    // title, weekDays
+    const createHabitBody = z.object({
+        title: z.string(),
+        weekDays: z.array(z.number().min(0).max(6)),
+    });
+    const { title, weekDays } = createHabitBody.parse(req.body);
+```
+E depois cotinuar criando o outro metodo, o get, e create.
+
+
 ## Criação de um novo hábito
+
+```bash
+
+await prisma.habit.create({
+        data: {
+        title,
+        createdAt: today,
+        weekDays: {
+            create: weekDays.map((weekDay: any) => {
+            return {
+                week_day: weekDay,
+            };
+        }),
+        },
+    },
+    });
+});
+```
+
+- Instalar a lib dayjs, para trabalharmos com datas:
+- 
+```bash
+npm i dayjs
+```
+- incluímos a linha, para já pegar dados no banco da mesma data de criação, do hábito:
+```bash
+const today = dayjs().startOf("day").toDate();
+```
+- Testar as rotas no Insomnia.
+- más antes rodar o servidor:
+
+```bash
+npm run dev
+```
+- Crie um post no insomnia:
+
+```bash
+{
+	"title": "Exemplo de hábito",
+	"weekDays": [0, 1, 2]
+}
+```
+e clique em send para testar a rota.
+
 ## Detalhe do dia(Hábitos completo/possíveis)
 
-## Toggle do hábito no dia
+```bash
+app.get("/day", async (req) => {
+    const getDayParams = z.object({
+        date: z.coerce.date(),
+    });
+
+    const { date } = getDayParams.parse(req.query);
+
+    const parsedDate = dayjs(date).startOf("day");
+    const weekDay = parsedDate.get("day");
+
+    const possibleHabits = await prisma.habit.findMany({
+        where: {
+        createdAt: {
+            lte: date,
+        },
+        weekDays: {
+            some: {
+            week_day: weekDay,
+        },
+        },
+    },
+    });
+
+    const day = await prisma.day.findUnique({
+        where: {
+        date: parsedDate.toDate(),
+    },
+        include: {
+        dayHabits: true,
+    },
+    });
+
+    const completedHabits = day?.dayHabits.map((dayHabit) => {
+        return dayHabit.habit_id;
+    });
+
+    return {
+        possibleHabits,
+        completedHabits,
+    };
+});
+```
+testar a roda /day no insomnia com o servidor rodando.
+
+# Aula -03
+## Toggle (dar um check ou desmarcar o hábito)-do hábito no dia
 
 ## Resumo de dias
 

@@ -11,8 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.8.1",
+    "dayjs": "^1.11.7",
     "fastify": "^4.11.0",
-    "ts-node": "^10.9.1"
+    "fastify-cors": "^6.1.0",
+    "ts-node": "^10.9.1",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^9.3.0",
