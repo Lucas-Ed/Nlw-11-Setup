@@ -385,18 +385,89 @@ const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length
 
 - Para crias vários quadradinhos:
 
-```bash
-        {amountOfDaysToFill > 0 && Array.from({ length: amountOfDaysToFill }).map((_, i) => {
-          return (
-            <div key={i} className="w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed" />
-          )
-        })}
-```
+
+
+
 # Aula 03
 ## Adicionando scroll horizontal
 
 ## Modal de crição de hábito
+-No header se encontra o button que abrirá o modal
+- Instalar a lib [radix-ui](https://www.radix-ui.com/docs/primitives/components/dialog) para usar os componentes prontos más sem estilização, usaremos o dialog:
+```bash
+npm i radix-ui@latest
+```
+- Fazer o import em Header.tsx:
+```bash
+import * as Dialog from '@radix-ui/react-dialog';
+```
+- Escrever o dialog que será chamado:
 
+```bash
+<Dialog.Root>
+        <Dialog.Trigger
+            type="button"
+            className="border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300"
+        >
+        <Plus size={20} className="text-violet-500" />
+            Novo hábito
+        </Dialog.Trigger>
+
+        <Dialog.Portal>
+            <Dialog.Overlay className="w-screen h-screen bg-black/80 fixed inset-0" />
+
+        <Dialog.Content className="absolute p-10 bg-zinc-900 rounded-2xl w-full max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Dialog.Close className="absolute right-6 top-6 text-zinc-400 hover:text-zinc-200">
+                <X size={24} aria-label="Fechar"  />
+            </Dialog.Close>
+
+            <Dialog.Title className="text-3xl leading-tight font-extrabold">
+                Criar bábito
+            </Dialog.Title>
+
+            <NewHabitForm />
+            </Dialog.Content>
+        </Dialog.Portal>
+
+    </Dialog.Root>
+```
+- No código acima repare que trocamos o button para um componente do radix por meio de  `<Dialog.Trigger></Dialog.Trigger>` e usaremos o `<Dialog.Portal>` da lib e o portal do [react](https://reactjs.org/docs/portals.html) para escrever o conteúdo fora do nosso componente, assim tudo que estiver dentro de `<Dialog.Portal>` será exibido em outro lugar da aplicação.
+- Dentro do portal colocaremos o componente overlay `<Dialog.Overlay className="w-screen h-screen bg-black/80 fixed inset-0" />` e colocaremos dentro o `</Dialog.Content>` para o conteúdo do modal. 
+- Usaremos o `</Dialog.Close>` para fechar o modal.
+
+- Criaremos um novo componente de nome NewHabitForm.tsx para o conteúdo do modal.
+- E colocaremos o código:
+
+```bash
+import { Check } from "phosphor-react";
+
+export function NewHabitForm() {
+return (
+    <form className="w-full flex flex-col mt-6">
+        <label htmlFor="title" className="font-semibold leading-tight">
+        Qual seu comprometimento?
+    </label>
+
+    <input 
+        type="text"
+        id="title"
+        placeholder="ex.: Exercícios, dormir bem, etc..."
+        className="p-4 rounded-lg mt-3 bg-zinc-800 text-white placeholder:text-zinc-400"
+        autoFocus
+    />
+
+<label htmlFor="" className="font-semibold leading-tight mt-4">
+        Qual a recorrência?
+</label>
+
+    <button type="submit" className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-green-600 hover:bg-green-500">
+        <Check size={20} weight="bold" />
+        Confirmar
+    </button>
+    </form>
+)
+}
+```
 ## Obtendo dados do forulário
 
 ## Popover de detalhe do dia
