@@ -395,4 +395,15 @@ const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length
 # Aula 03
 ## Adicionando scroll horizontal
 
+## Modal de crição de hábito
+
+## Obtendo dados do forulário
+
+## Popover de detalhe do dia
+
+## Sincronizando hábitos completos
+
+
+
+
 
