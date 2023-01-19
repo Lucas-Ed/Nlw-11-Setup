@@ -389,4 +389,163 @@ key={`${weekDay}-${i}`}
 ```bash
 import './src/lib/dayjs';
 ``` 
+# Aula 03
 
+// Estrutura básica das telas
+# Cadastro de hábito
+- Na pasta screens criar um arquivo de nome Habit.tsx, e New.tsx
+  
+# Detalhe de hábito
+- Na pasta screens criar um arquivo de nome New.tsx
+
+// Implementando a navegação
+## Criar as rotas da aplicação
+
+- Instalar a lib [react-navigation:](https://reactnavigation.org/docs)
+
+```bash
+npm install @react-navigation/native
+```
+
+- Instalar a dependências em um projeto gerenciado Expo
+
+
+```bash
+npx expo install react-native-screens react-native-safe-area-context
+```
+
+- Adicionar [estratégia de navegação stack navigator](https://reactnavigation.org/docs/hello-react-navigation)
+- 
+```bash
+npm install @react-navigation/native-stack
+```
+
+- Dentro da pasta src criar o arquivo app.routes.tsx, e fazer as rotas:
+
+```bash
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const { Navigator, Screen } = createNativeStackNavigator();
+
+import { Home } from "../screens/Home";
+import { New } from "../screens/New";
+import { Habit } from "../screens/Habit";
+
+export function AppRoutes() {
+  return (
+    <Navigator screenOptions={{ headerShown: false }}>
+      <Screen name="home" component={Home} />
+      <Screen name="new" component={New} />
+      <Screen name="habit" component={Habit} />
+    </Navigator>
+  );
+}
+```
+- Dentro da pasta routes criar o arquivo index.tsx, para criar o contexto de acesso as rotas:
+
+```bash
+import { View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { AppRoutes } from "./app.routes";
+
+export function Routes() {
+  return (
+    <View className="flex-1 bg-background">
+      <NavigationContainer>
+        <AppRoutes />
+      </NavigationContainer>
+    </View>
+  );
+}
+```
+
+- Em App.tsx mudar do home para routes,mudar o import e a tag de Home para Routes:
+
+```bash
+import { Routes } from './src/routes';
+
+//  de <Home />, para:
+<Routes />
+```
+- Rodar novamente a aplicação:
+
+```bash
+npx expo start
+```
+- deverá aparecer o home no topo da página , para tira-lo mofificaremos o navigator do arquivo app.routes.tsx:
+
+```bash
+<Navigator screenOptions={{ headerShown: false }}>
+```
+## Navegar para a tela de cadastro
+
+- Em Header.tsx fazer o import:
+  
+```bash
+import { useNavigation } from "@react-navigation/native";
+
+// Adicionar na função principal
+const { navigate } = useNavigation();
+```
+- o navigate é usado para navegar de uma tela pra outra.
+
+## Definir a tipagem das rotas de navegação
+- Na pasta @types criar o arquivo, navigation.d.ts e por o código:
+
+```bash
+export declare global {
+  namespace ReactNavigation {
+    interface RootParamList {
+      home: undefined;
+      new: undefined;
+      habit: {
+        date: string;
+      };
+    }
+  }
+}
+// Dessa forma dizmos quais rotas estão disponíveis.
+```
+
+- Em Header.tsx passar o  onPress para funcionar a rota:
+
+```bash
+onPress={() => {
+          navigate("new");
+```
+// Criar Interface de cadastro de hábitos
+
+## Reaproveitar o componente BackButton
+
+
+## Componente BackButton
+
+## Implementar botão de voltar na tela de cadastro
+
+## Input de novo hábito
+
+## Componente de Checkox
+
+## Listar um Checkbox para cada dia da semana
+## Criar a função de marcar/desmarcar Checkox
+
+## Botão de confirmar
+
+## Utiliar scroolView para habilitar rolagem
+
+// Criar interface de hábitos do dia 
+
+## Navegar para a tela de hábito
+
+
+## Reaproveitar o componente BackButton
+## Passando e recuperando data como parâmetro da rota
+
+
+## Formatar e exibir o dia da semana
+
+## Formatar e exibir dia/mês
+
+## Criar componente ProgressBar
+
+## Utilizar componente de Checkbox

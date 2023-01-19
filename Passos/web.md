@@ -468,9 +468,90 @@ return (
 )
 }
 ```
-## Obtendo dados do forulário
 
-## Popover de detalhe do dia
+
+## [Popover](https://www.radix-ui.com/docs/primitives/components/popover) de detalhe do dia
+
+- Fazer a instalação:
+```bash
+npm install @radix-ui/react-popover
+```
+- Em habitday.tsx fazer o import:
+
+```bash
+import * as Popover from '@radix-ui/react-popover';
+```
+
+- Dentro do return da função usar o popover:
+
+```bash
+<Popover.Root>
+      <Popover.Trigger
+        className={clsx("w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg", {
+          'bg-zinc-900 border-zinc-800': comlpetedPercentage === 0,
+          'bg-violet-900 border-violet-500': comlpetedPercentage > 0 && comlpetedPercentage < 20,
+          'bg-violet-800 border-violet-500': comlpetedPercentage >= 20 && comlpetedPercentage < 40,
+          'bg-violet-700 border-violet-500': comlpetedPercentage >= 40 && comlpetedPercentage < 60,
+          'bg-violet-600 border-violet-500': comlpetedPercentage >= 60 && comlpetedPercentage < 80,
+          'bg-violet-500 border-violet-400': comlpetedPercentage >= 80,
+        })}
+      />
+
+      <Popover.Portal>
+        <Popover.Content className="min-w-[320px] p-6 rounded-2xl bg-zinc-900 flex flex-col">
+          <span className="font-semibold text-zinc-400">terça-feira</span>
+          <span className="mt-1 font-extrabold leading-tight text-3xl">19/01</span>
+
+          <ProgressBar progress={comlpetedPercentage} />
+
+          <Popover.Arrow height={8} width={16} className='fill-zinc-900' />
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
+```
+
+- Criar um componente somente pra barra de progresso de nome ProgressBar.tsx
+
+- Por o código:
+
+```bash
+interface ProgressBarProps {
+    progress: number
+  }
+  
+  export function ProgressBar(props: ProgressBarProps) {
+    return (
+      <div className='h-3 rounded-xl bg-zinc-700 w-full mt-4'>
+        <div 
+          role="progressbar"
+          aria-label="Progresso de hábitos completados nesse dia"
+          aria-valuenow={props.progress}
+          className="h-3 rounded-xl bg-violet-600"
+          style={{
+            width: `${props.progress}%`
+          }}
+        />
+      </div>
+    )
+  }
+```
+## Personalizar o progresso no quadrado do hábito
+- No componente HabitDay.tsx foi, instalar a lib clsx para as classes condicionais:
+
+```bash
+npm i clsx
+```
+- No arquivo SummaryTable.tsx gerar o status com aleatóriedade:
+
+```bash
+<HabitDay key={date.toString()} completed={
+              Math.round(Math.random() * 5)
+            } amount={5} />
+```
+
+
+# Aula 04
+## Obtendo dados do forulário
 
 ## Sincronizando hábitos completos
 
