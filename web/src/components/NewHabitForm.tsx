@@ -3,6 +3,8 @@ import * as Checkbox from '@radix-ui/react-checkbox'
 import { FormEvent, useState } from 'react'
 import { api } from '../lib/axios'
 import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 
 
 const availableWeekDays = [

@@ -713,6 +713,9 @@ coloque o código:
 ```bash
 import  axios from 'axios'
 
+```
+
+```bash
 export const api = axios.create({
     baseURL:'http://localhost:3333'
 })

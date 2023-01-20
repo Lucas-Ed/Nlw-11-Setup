@@ -757,3 +757,280 @@ export function ProgressBar({ progress = 0 }: Props) {
             <Checkbox title="Caminhar/Correr" />
 </View>
 ```
+# Aula 04
+
+## Instalando axios
+
+```bash
+npm i axios 
+
+```
+
+- Dentro da pasta lib crie o arquivo axios.ts, e coloqe o código:
+
+```bash
+import axios from 'axios'
+
+export const api = axios.create({
+    baseURL: 'http://192.168.0.30:3333'
+});
+
+```
+
+
+## Configurando o acesso ao server
+
+
+// Home
+
+## Listando sumário
+
+- na tela em screens Home.tsx fazer o import da api:
+
+```bash
+import { api } from '../lib/axios'
+```
+- E dentro da função gome criar outra função, do tipo fetch para fazer uma requisição:
+
+```bash
+  async function fetchData() {
+    try {
+      setLoading(true)
+      const response = await api.get('/summary');
+
+      console.log(response.data)
+      setSummary(response.data)
+    } catch (error) {
+      Alert.alert('Ops', 'Não foi possível carregar o sumário de hábitos')
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  if(loading){
+    return(
+      <Loading />
+    )
+  }
+```
+
+- Incluir o alert no inport:
+
+```bash
+import { Text, View, ScrollView, Alert } from 'react-native';
+
+// Fazer o import do usestate e useefect
+import { useState, useEffect } from 'react'
+
+```
+- Na pasta utils, apagar oarquivo de lá e criar um novo de nome generate-dates-from-year-beginning.ts
+
+```bash
+import dayjs from 'dayjs'
+
+export function generateDatesFromYearBeginning(){
+  const firstDayOfTheYear = dayjs().startOf('year')
+  const today = new Date()
+
+  const dateRange = []
+  let compareDate = firstDayOfTheYear
+
+  while(compareDate.isBefore(today)){
+    dateRange.push(compareDate.toDate())
+    compareDate = compareDate.add(1, 'day')
+  }
+
+  return dateRange
+}
+```
+- Criar um novo arquivo também de nome: generate-progress-percentage.ts e por:
+
+```bash
+export function GenerateProgressPercentage(total: number, completed: number){
+    return Math.round(completed/ total) * 100
+}
+```
+
+- No arquivo Home.tsx fazer o imports:
+
+```bash
+import { generateDatesFromYearBeginning } from '../utils/generate-dates-from-year-beginning'
+
+// Dentro da função Home passar:
+  const [loading, setLoading] = useState(true)
+  const [summary, setSummary] = useState<SummaryProps | null>(null)
+```
+
+- Fazer a requisição:
+
+```bash
+async function fetchData() {
+    try {
+      setLoading(true)
+      const response = await api.get('/summary');
+
+      console.log(response.data)
+      setSummary(response.data)
+    } catch (error) {
+      Alert.alert('Ops', 'Não foi possível carregar o sumário de hábitos')
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+```
+## Utilizando o componente de loading
+
+- Fazer o imort do component pronto: 
+
+```bash
+import { Loading } from '../components/Loading'
+```
+- Passar o componente:
+
+```bash
+  if(loading){
+    return(
+      <Loading />
+    )
+  }
+
+```
+## Passando utilizando propriedades, no componente HabitDay
+
+```bash
+ <HabitDay
+              key={date.toISOString()}
+              date={date}
+              amountOfHabits={dayWithHabits?.amount}
+              amountCompleted={dayWithHabits?.completed}
+              onPress={() => navigate('habit', { date: date.toISOString() })}
+            />
+```
+
+## Criando uma função para calcular a porcentagem do processo
+
+- No arquivo generate-progress-percentage.ts em utils por: 
+
+```bash
+export function GenerateProgressPercentage(total: number, completed: number){
+    return Math.round(completed/ total) * 100
+}
+# // isso calcula a porcentagem para definir a cor do quadrado
+```
+
+- Em HabitDay.tsx:
+
+```bash
+  const amountAccomplishedPercentage =
+    amountOfHabits > 0
+      ? GenerateProgressPercentage(amountOfHabits, amountCompleted)
+      : 0
+```
+
+- Instalar a lib clsx:
+
+```bash
+npm i --save clsx
+```
+
+- Fazer o import:
+
+```bash
+import clsx from 'clsx'
+```
+
+- Criar as condições:
+
+```bash
+ <TouchableOpacity
+      className={clsx('rounded-lg border-2 m-1', {
+        ['bg-zinc-900 border-zinc-800']: amountAccomplishedPercentage === 0,
+        ['bg-violet-900 border-violet-700']:
+          amountAccomplishedPercentage > 0 && amountAccomplishedPercentage < 20,
+        ['bg-violet-800 border-violet-600']:
+          amountAccomplishedPercentage > 20 &&
+          amountAccomplishedPercentage < 40,
+        ['bg-violet-700 border-violet-500']:
+          amountAccomplishedPercentage > 40 &&
+          amountAccomplishedPercentage < 60,
+        ['bg-violet-600 border-violet-500']:
+          amountAccomplishedPercentage > 60 &&
+          amountAccomplishedPercentage < 80,
+        ['bg-violet-500 border-violet-400']: amountAccomplishedPercentage > 80,
+        ['border-white border-4']: isCurrentDay,
+      })}
+      style={{ width: DAY_SIZE, height: DAY_SIZE }}
+      activeOpacity={0.7}
+      {...rest}
+    />
+```
+
+- Referenciar o quadrado pela data atual:
+
+- Usar o day js fazer o import:
+
+```bash
+import dayjs from 'dayjs'
+```
+
+```bash
+  const today = dayjs().startOf('day').toDate();
+  const isCurrentDay = dayjs(date).isSame(today)
+```
+se for ele executa a classe de cor.
+
+// New
+
+## Obtendo dados do formulário
+
+- Incluir na função new:
+
+```bash
+const [title, setTitle] = useState('')
+
+# E na tag <TextInput
+# a propriedade: 
+          onChangeText={setTitle}
+          value={title}
+# Essa propriedade observa o conteúdo do input, e pega o valor em sí
+```
+## Cadastrando e enviando novo hábito para a API
+- Fazer o import do alert
+
+- Criar a função:
+
+```bash
+async function handleCreateNewHabit() {
+    try {
+      if (!title.trim() || weekDays.length === 0) {
+        Alert.alert(
+          'Novo hábito',
+          'Informe o nome do hábito e escolha o período.'
+        )
+      }
+
+      await api.post('/habits', { title, weekDays })
+
+      setTitle('')
+      setWeekDays([])
+      Alert.alert('Novo hábito', 'Hábito criado com sucesso!')
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Ops', 'Não foi possível criar um novo hábito.')
+    }
+  }
+```
+
+- Chamar a função no botão, TouchableOpacity.
+- através da propriedade:
+
+```bash
+onPress={handleCreateNewHabit}
+```
+ 
