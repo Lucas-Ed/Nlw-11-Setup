@@ -551,9 +551,164 @@ npm i clsx
 
 
 # Aula 04
+
+## Criando checkboxes
+- Instalar o checkbox do [Radix-Ui](https://www.radix-ui.com/docs/primitives/components/checkbox)
+```bash
+npm install @radix-ui/react-checkbox
+```
+- Criaremos o checkbox dentro do compinente HabitDay.tsx
+
+- Fazer os imports:
+```bash
+import * as Checkbox from '@radix-ui/react-checkbox'
+
+import { Check } from 'phosphor-react'
+
+import dayjs from 'dayjs'
+
+```
+
+- E após a tag `<ProgressBar progress={completedPercentage} />` acrescentar o código:
+
+```bash
+<div className="mt-6 flex flex-col gap-3">
+            <Checkbox.Root className="flex items-center gap-3 group">
+              <div className="h-8 w-8 rounded-lg flex items-center justify-center bg-zinc-900 border-2 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-500">
+                <Checkbox.Indicator>
+                  <Check size={20} className="text-white" />
+                </Checkbox.Indicator>
+              </div>
+
+              <span className="font-semibold text-xl text-white leading-tight group-data-[state=checked]:line-through group-data-[state=checked]:text-zinc-400">
+                Beber 2L de água
+              </span>
+            </Checkbox.Root>
+          </div>
+```
+
+
+- Em NewHabitForm usaremos o checkbox tbm:
+
+```bash
+<Checkbox.Root
+                key="weekDay"
+                className="flex items-center gap-3 group"
+                checked={weekDays.includes(index)}
+                onCheckedChange={() => handleToggleWeekDay(index)}
+            >
+            <div className="h-8 w-8 rounded-lg flex items-center justify-center bg-zinc-900 border-2 border-zinc-800 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-green-500">
+                <Checkbox.Indicator>
+                    <Check size={20} className="text-white" />
+                </Checkbox.Indicator>
+            </div>
+
+                <span className=" text-white leading-tight">{weekDay}</span>
+            </Checkbox.Root>
+```
+
+- Adicionando mais dias da semana, para não repetir o item do checkbox.
+
+- 1° faça uma lista dos dias:
+
+```bash
+const availableWeekDays = [
+    'Domingo',
+    'Segunda-feira',
+    'Terça-feira',
+    'Quarta-feira',
+    'Quinta-feira',
+    'Sexta-feira',
+    'Sábado'
+]
+```
+
+- 2° Na div principal que envolve o checkbox, por o availableWeekDays, envolvendo o checkbox:
+
+```bash
+{availableWeekDays.map((weekDay, index) => {
+  return(
+  <Checkbox.Root>
+
+  </Checkbox.Root>
+)}
+```
+- 3° Eno lugar de de segunda feira trocar por 
+
+```bash
+{weekDay}
+```
+- 4° No checkbox.root passar a key:
+
+```bash
+ key="weekDay"
+```
 ## Obtendo dados do forulário
 
+- Crie uma função em NewHabitForm para obter os dados do formulário:
+
+```bash
+async function createNewHabit(event: FormEvent) {
+    event.preventDefault()
+
+    if (!title || weekDays.length === 0) {
+        return
+    }
+    await api.post('habits', {
+        title,
+        weekDays
+    })
+
+    setTitle('')
+    setWeekDays([])
+
+    alert('Hábito criado com sucesso!')
+}
+```
+- Adicionar o que será executado quando o usuário usar o check, na tag `<input></input>`.
+
+```bash
+onChange={event => setTitle(event.target.value)}
+
+# // e no form o :
+onSubmit={createNewHabit}
+```
+
+- Fazer uma função para tirar a seleção do checkbox, incluir a função:
+
+```bash
+
+function handleToggleWeekDay(weekDay: number) {
+    if (weekDays.includes(weekDay)) {
+        const weekDaysWithRemovedOne = weekDays.filter(day => day !== weekDay)
+
+        setWeekDays(weekDaysWithRemovedOne)
+    } else {
+        const weekDaysWithAddedOne = [...weekDays, weekDay]
+        setWeekDays(weekDaysWithAddedOne)
+    }
+}
+```
+
+- Adicionar o que será executado quando o usuário usar o check, na tag `<Checkbox.Root></Checkbox.Root>`.
+
+```bash
+onCheckedChange={() => handleToggleWeekDay(index)}
+```
+
 ## Sincronizando hábitos completos
+
+## Conexão com back-end
+
+## Configuração cliente http
+
+## Buscando resumo da api
+
+## Utilizando dados da api no popover
+
+## Criação de novo hábito
+
+
 
 
 
