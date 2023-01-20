@@ -2,6 +2,8 @@ import { Check } from 'phosphor-react'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { FormEvent, useState } from 'react'
 import { api } from '../lib/axios'
+import Swal from 'sweetalert2'
+
 
 const availableWeekDays = [
     'Domingo',
@@ -31,7 +33,22 @@ async function createNewHabit(event: FormEvent) {
     setTitle('')
     setWeekDays([])
 
-    alert('Hábito criado com sucesso!')
+    // alert('Hábito criado com sucesso!')
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    Toast.fire({
+        icon: 'success',
+        title: 'Hábito criado com sucesso !'
+})
 }
 
 function handleToggleWeekDay(weekDay: number) {
@@ -92,6 +109,7 @@ return (
         <Check size={20} weight="bold" />
         Confirmar
         </button>
+
     </form>
 )
 }

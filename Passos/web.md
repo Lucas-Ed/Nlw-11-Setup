@@ -669,10 +669,14 @@ async function createNewHabit(event: FormEvent) {
 
 ```bash
 onChange={event => setTitle(event.target.value)}
-
+``
 # // e no form o :
+```bash
 onSubmit={createNewHabit}
 ```
+
+## Sincronizando hábitos completos
+
 
 - Fazer uma função para tirar a seleção do checkbox, incluir a função:
 
@@ -696,17 +700,151 @@ function handleToggleWeekDay(weekDay: number) {
 onCheckedChange={() => handleToggleWeekDay(index)}
 ```
 
-## Sincronizando hábitos completos
-
 ## Conexão com back-end
 
+- Instalar a lib axios:
+```bash
+npm i axios
+```
+- Crie uma pasta dentro de src de nome lib e crie o arquivo de nome axios.ts
+
+coloque o código:
+# // e no form o :
+```bash
+import  axios from 'axios'
+
+export const api = axios.create({
+    baseURL:'http://localhost:3333'
+})
+```
 ## Configuração cliente http
+- Colocar o método get do arquivo SummaryTable.tsx dentro do useefect para ser executado somente 1 única vez:
 
-## Buscando resumo da api
+```bash
 
+  const [summary, setSummary] = useState<Summary>([])
+
+  useEffect(() => {
+    api.get('summary').then(response => {
+      setSummary(response.data)
+    })
+  }, [])
+```
+
+
+- Checando data no banco usano o dayjs:
+
+```bash
+          {summaryDates.map(date => {
+          const dayInSummary = summary.find(day => {
+            return dayjs(date).isSame(day.date, 'day')
+          })
+```
+
+- Passar o date na lista de tipagem:
+
+```bash
+type Summary = {
+  id: string
+  date: string
+  amount: number
+  completed: number
+}[]
+```
 ## Utilizando dados da api no popover
+- Em HabitDay.tsx
 
-## Criação de novo hábito
+```bash
+  const dayAndMonth = dayjs(date).format('DD/MM')
+  const dayOfweek = dayjs(date).format('dddd')
+```
+
+- Dentro da tag span passar o `{dayOfweek}`, em lib crie o arquivo dayjs.ts
+
+```bash
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
+
+dayjs.locale('pt-br')
+```
+
+- Efazer o import em App.tsx
+
+```bash
+import './lib/dayjs'
+```
+
+## Sincronizando hábitos completos &&  Criação de novo hábito
+
+- Em NewHabitForm.tsx incluir na função createNewHabit
+
+```bash
+    if (!title || weekDays.length === 0) {
+        return
+    }
+    await api.post('habits', {
+        title,
+        weekDays
+    })
+
+    setTitle('')
+    setWeekDays([])
+
+    alert('Hábito criado com sucesso!')
+
+})
+```
+## Extra alert personalizado com sweetalert2
+
+- Fazer a instalação:
+
+```bash
+npm install sweetalert2
+```
+
+- Em NewHabitForm.tsx faz o import
+
+```bash
+import Swal from 'sweetalert2'
+```
+- E no alert por:
+
+```bash
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    Toast.fire({
+        icon: 'success',
+        title: 'Hábito criado com sucesso !'
+})
+```
+- No mesmo arquivo setar título e semana vazio para esvaziar o checkbox após o usuário confirmar:
+
+```bash
+    setTitle('')
+    setWeekDays([])
+```
+
+- No input passar o:
+
+```bash
+value={title}
+```
+
+- Passar no checkbox, ele será checado caso a variáve WeekDay inculua o indice(dias)
+
+```bash
+checked={weekDays.includes(index)}
+```
+
 
 
 
