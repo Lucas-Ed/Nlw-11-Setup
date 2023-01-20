@@ -409,7 +409,6 @@ npm install @react-navigation/native
 
 - Instalar a dependências em um projeto gerenciado Expo
 
-
 ```bash
 npx expo install react-native-screens react-native-safe-area-context
 ```
@@ -517,35 +516,244 @@ onPress={() => {
 
 ## Reaproveitar o componente BackButton
 
+### Utiliar scroolView para habilitar rolagem
+- No arquivo New.tsx fazer o scroll
+  
+```bash
+  return (
+    <View className="flex-1 bg-background px-8 pt-16 ">
+      <ScrollView
+        showsVerticalScrollIndicator={false} 
+        contentContainerStyle={{ paddingBottom: 100 }}
+      # > // false ou true habilita ou deabilita o scroll
 
-## Componente BackButton
+      </ScrollView>
+    </View>
+  );
+```
 
-## Implementar botão de voltar na tela de cadastro
+- Criar o componente com nome BackButton.tsx, e por o código:
 
+```bash
+# Componente BackButton
+import { TouchableOpacity } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import colors from "tailwindcss/colors";
+import { useNavigation } from "@react-navigation/native";
+
+export function BackButton() {
+  const { goBack } = useNavigation();
+  return (
+    # Implementar botão de voltar na tela de cadastro
+    <TouchableOpacity activeOpacity={0.7} onPress={goBack}>
+      <Feather name="arrow-left" size={32} color={colors.zinc[400]} />
+    </TouchableOpacity>
+  );
+}
+```
 ## Input de novo hábito
+
+- No arquivo New.tsx, por a tag  do `<BackButton />`, e abai dar sequência.
+
+```bash
+<Text className="mt-6 text-white font-extrabold text-3xl">
+          Criar hábito
+        </Text>
+
+        <Text className="mt-6 text-white font-semibold text-base">
+          Qual seu comprometimento?{" "}
+        </Text>
+
+        <TextInput
+          className="h-12 pl-4 rounded-lg mt-3 bg-zinc-900 text-white border-zinc-800 border-2 focus:border-green-600"
+          placeholder="ex.: Exercícios, dormir bem, etc..."
+          placeholderTextColor={colors.zinc[400]}
+        />
+
+        <Text className="font-semibold mt-4 mb-3 text-white text-base">
+          Qual a recorrência?
+        </Text>
+
+        {availableWeekDays.map((weekDay, index) => (
+          <Checkbox
+            key={weekDay}
+            title={weekDay}
+            checked={weekDays.includes(index)}
+            onPress={() => handleToggleWeekDay(index)}
+          />
+        ))}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          className="w-full h-14 flex-row items-center justify-center bg-green-600 rounded-md mt-6"
+        >
+          <Feather name="check" size={20} color={colors.white} />
+          <Text className="font-semibold text-base text-white ml-2">
+            Confirmar
+          </Text>
+```
 
 ## Componente de Checkox
 
-## Listar um Checkbox para cada dia da semana
-## Criar a função de marcar/desmarcar Checkox
+- Na função new dentro de New.tsx criar um estado:  ` const [weekDays, setWeekDays] = useState<number[]>([]);`
+
+- Cria também uma função pra isso:
+
+```bash
+  # Criar a função de marcar/desmarcar Checkox
+  # Listar um Checkbox para cada dia da semana
+  function handleToggleWeekDay(weekDayIndex: number) {
+    if (weekDays.includes(weekDayIndex)) {
+      setWeekDays((prevState) =>
+        prevState.filter((weekDay) => weekDay !== weekDayIndex)
+      );
+    } else {
+      setWeekDays((prevState) => [...prevState, weekDayIndex]);
+    }
+  }
+```
+
+
 
 ## Botão de confirmar
+- Ainda no arquivo New.tsx coloque o código do botão:
 
-## Utiliar scroolView para habilitar rolagem
+```bash
+<TouchableOpacity
+          activeOpacity={0.7}
+          className="w-full h-14 flex-row items-center justify-center bg-green-600 rounded-md mt-6"
+        >
+          <Feather name="check" size={20} color={colors.white} />
+          <Text className="font-semibold text-base text-white ml-2">
+            Confirmar
+          </Text>
+        </TouchableOpacity>
+```
+
 
 // Criar interface de hábitos do dia 
 
 ## Navegar para a tela de hábito
 
+- Em home.tsx na função Home antes do return por o código o import e:
 
-## Reaproveitar o componente BackButton
+```bash
+import { useNavigation } from "@react-navigation/native";
+
+const { navigate } = useNavigation();
+```
+- No componente HabitDay.tsx, depois dos imports colocar
+
+```bash
+interface Props extends TouchableOpacityProps {}
+```
+
+- Fazer o import junto com os outros passar o TouchableOpacityProps:
+
+```bash
+import { Dimensions, TouchableOpacity, TouchableOpacityProps, } from "react-native";
+```
+- Na função pegar todo o restante
+  
+```bash
+export function HabitDay({ ...rest }: Props) {}
+```
+- Passar `{...rest}` dentro da tag: `<TouchableOpacity>`
+- Voltar em Home,tsx e passar o onPress dentro da tag `<HabitDay>`:
+
+```bash
+onPress={() => navigate("habit", { date: date.toISOString() })}
+```
 ## Passando e recuperando data como parâmetro da rota
+- Em habit.tsx tipar os parâmetros:
 
+```bash
+interface Params {
+  date: string;
+}
+```
+- No mesmo arquivo importar o :
+ ```bash
+import { useRoute } from "@react-navigation/native";
+```
+- No mesmo arquivo passa antes do return e depois de import:
 
-## Formatar e exibir o dia da semana
+```bash
+# Formatar e exibir o dia da semana
+    const route = useRoute();
+    const { date } = route.params as Params;
+```
+## Reaproveitar o componente BackButton
+- Reaproveitar o scroll:
 
+```bash
+<ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+    >
+        
+    </ScrollView>
+```
+Não esquecer de fazer o import.
+
+- Criar os textos dentro do scroll
+
+```bash
+// por a tag do componente BackButton e fazer o import
+<BackButton />
+<Text className="mt-6 text-zinc-400 font-semibold text-base lowercase">
+            {dayOfWeek}
+        </Text>
+        <Text className=" text-white font-extrabold text-3xl">
+            {dayAndMonth}
+        </Text>
+```
 ## Formatar e exibir dia/mês
+- Fazer o import de dayjs
+  
+```bash
+import dayjs from "dayjs";
+```
+- Converter data como string por parâmetro:
+```bash
+    const parsedDate = dayjs(date);
+    const dayOfWeek = parsedDate.format("dddd");
+    const dayAndMonth = parsedDate.format("DD/MM");   
+```
+- Passar o dayweek dentro do texto:
 
+```bash
+{dayOfWeek}
+```
 ## Criar componente ProgressBar
+- Criar um componente de nome: ProgressBar.tsx e por o código:
 
+```bash
+import { View } from "react-native";
+
+interface Props {
+  progress?: number;
+}
+
+export function ProgressBar({ progress = 0 }: Props) {
+  return (
+    <View className="w-full h-3 rounded-xl bg-zinc-700 mt-4">
+      <View
+        className="h-3 rounded-xl bg-violet-600"
+        style={{ width: `${progress}%` }}
+      ></View>
+    </View>
+  );
+}
+```
+- Em  Habit.tsx chamar a ProgreesBar
+```bash
+<ProgressBar progress={40} />
+```
 ## Utilizar componente de Checkbox
+
+```bash
+<View className="mt-6">
+            <Checkbox title="Beber 2L de água" checked />
+            <Checkbox title="Caminhar/Correr" />
+</View>
+```
