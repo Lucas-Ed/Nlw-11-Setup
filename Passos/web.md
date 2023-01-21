@@ -848,8 +848,100 @@ value={title}
 checked={weekDays.includes(index)}
 ```
 
+# Aula 05
+
+## Listando hábitos possíveis do dia
+- Carregando dados somente quando o usuário clicar no popover ver no video, impossivel documentar esta etapa.
+
+## Desabilitando em datas passadas
+- Não permitir o usuário dar o checked na data que passou.
+- Em HabitList.tsx
+```bash
+const isDateInPast = dayjs(date).endOf("day").isBefore(new Date());
+```
 
 
+- Na tag checkbox.root passar na tag:
+
+```bash
+disabled={isDateInPast}
+```
+
+## Sincronizando hábitos completos 
+- Comunicar com a api quando fazer o toggle de não completo para completo.
+
+- Criar a função handleToggleHabit, no arquivo HabitsList.tsx:
+
+```bash
+async function handleToggleHabit(habitId: string) {
+    await api.patch(`/habits/${habitId}/toggle`);
+
+    const isHabitAlreadyCompleted =
+        habitsInfo!.completedHabits.includes(habitId);
+
+    let completedHabits: string[] = [];
+
+    if (isHabitAlreadyCompleted) {
+        completedHabits = habitsInfo!.completedHabits.filter(
+        (id) => id !== habitId
+    );
+    } else {
+            completedHabits = [...habitsInfo!.completedHabits, habitId];
+    }
+    setHabitsInfo({
+        possibleHabits: habitsInfo!.possibleHabits,
+        completedHabits,
+    });
+
+    onCompletedChanged(completedHabits.length);
+}
+```
+- Chamar a função no checkbox.root passar na tag:
+
+```bash
+onCheckedChange={() => handleToggleHabit(habit.id)}
+```
+
+- Em HabitDay.tsx criar a função:
+
+```bash
+  function handleCompletedChanged(completed: number) {
+    setCompleted(completed);
+  }
+```
+- E na tag Habitslist  enviar a função:
+
+```bash
+onCompletedChanged={handleCompletedChanged}
+```
+- E no componente HabitsList por o onCompletedChanged:
+
+```bash
+interface HabitsListProps {
+date: Date;
+onCompletedChanged: (completed: number) => void;
+}
+```
+falta mais etapas ver no video a partir de: 29:38 minutos
+
+## Adicionando transitions e focus
+
+- Em ProgressBar.tsx passa no classname da 2° div o: `transition-all`
+- E no habitDay.tsx no classname do Popover.Trigger por o `transition-colors`
+
+- E no NewHabitForm.tsx no classname do button e no checkboxes do HabitsList por o `transition-colors`
+
+- No botão novo hábito em Header.tsx no classname do botão `transition-colors focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 focus:ring-offset-background`
+
+- Em HabitDay no classname do popover.triger passar também o `focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 focus:ring-offset-background`
+
+- No checkbox do HabitDay no classname do Checkbox.Root `focus:outline-none disabled:cursor-not-allowed`.
+- No classname na div do group: `group-focus:ring-2 group-focus:ring-violet-700 group-focus:ring-offset-2 group-focus:ring-offset-background`.
+
+- Em NewHabitForm colocar os class name as classes de focus: `focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 focus:ring-offset-background`.  
+ - No input: `focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 focus:ring-offset-zinc-900`.
+ - No Checkboxrot `focus:outline-none`.
+ - Em header.tsx no botão de x no classname colocar: ` rounded-lg  focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 focus:ring-offset-zinc-900`
 
 
 
