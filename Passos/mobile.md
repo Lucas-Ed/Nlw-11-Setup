@@ -1009,7 +1009,7 @@ const [title, setTitle] = useState('')
 async function handleCreateNewHabit() {
     try {
       if (!title.trim() || weekDays.length === 0) {
-        Alert.alert(
+        return Alert.alert(
           'Novo hábito',
           'Informe o nome do hábito e escolha o período.'
         )
@@ -1033,4 +1033,101 @@ async function handleCreateNewHabit() {
 ```bash
 onPress={handleCreateNewHabit}
 ```
+ # Aula 05
  
+ ## Buscar os hábitos do dia selecionado na API
+
+- Em Habit.tsx, criar o estado de loading
+- Na função Habit(), setar o usestate:
+
+```bash
+const [loading, setLoading] = useState(true);
+const [dayInfo, setDayInfo] = useState<DayInfoProps | null>(null);
+```
+
+- Criar uma nova função:
+
+```bash
+async function fetchHabits() {
+        try {
+            setLoading(true);
+    
+            const response = await api.get('/day', { params: { date }, });
+            setDayInfo(response.data);
+            setCompletedHabits(response.data.completedHabits);
+    
+        } catch (error) {
+            Alert.alert('Ops', 'Não foi possível carregar as informações dos hábitos');
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+```
+
+- Usar o useefect para rodar somente 1 vez a função
+```bash
+useEffect(() => {
+    fetchHabits();
+}, []);
+```
+
+- Setar os tipos:
+
+```bash
+interface DayInfoProps {
+completedHabits: string[];
+possibleHabits: {
+    id: string;
+    title: string;
+}[]
+}
+```
+ver no video os outros passos não pude documentar eram muitos.
+
+ ## Criar o componente de lista de hábitos vazia
+
+- Crie um novo componente de nome HabitsEmpty.tsx:
+
+```bash
+import { useNavigation } from '@react-navigation/native';
+import { Text } from 'react-native';
+
+export function HabitsEmpty() {
+    const { navigate } = useNavigation();
+
+return (
+    <Text
+        className="text-zinc-400 text-base"
+    >
+        Você ainda não está monitorando nenhum hábito {' '}
+
+    <Text
+        className="text-violet-400 text-base underline active:violet-500"
+        onPress={() => navigate('new')}
+    >
+        comece cadastrando um
+        </Text>
+    </Text>
+);
+}
+<!-- ```
+ ## Enviar para a API o status do hábito (realizado ou não)
+
+ ## Utilizando o useFocusEffect para utilizar a home ao voltar
+
+# // Animação
+
+## Conhecendo o React Native Reanomated
+
+## Instalando e configurando o Reanomated na aplicação
+
+## Animar a ProgressBar
+
+## Animar o Checkbox -->
+
+
+## Testando tudo
+
+
