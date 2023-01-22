@@ -1119,15 +1119,98 @@ return (
 
 # // Animação
 
-## Conhecendo o React Native Reanomated
+## Conhecendo o [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation)
+- Utilizar a lib para suavizar os efeitos do checkbox e progreesbar
 
 ## Instalando e configurando o Reanomated na aplicação
+- Instalação:
 
+```bash
+npx expo install react-native-reanimated
+
+//ou
+npx expo install react-native-reanimated@~2.12.0
+```
+- No arquivo babel.config.js, adicionar o plugin:
+
+```bash
+'react-native-reanimated/plugin'
+```
 ## Animar a ProgressBar
+
+- No componente a ser animado fazer o import do animated:
+
+```bash
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+```
+
+- Para animar a view, vamos fazer uma trasição mais suave da barra de progresso, pela largura.
+
+- Mudar a segunda tag View para Animated.view:
+
+```bash
+  return (
+    <View className="w-full h-3 rounded-xl bg-zinc-700 mt-4">
+      <Animated.View
+        className="h-3 rounded-xl bg-violet-600"
+        style={{ width: `${progress}%` }}
+      />
+    </View>
+  );
+```
+
+- Mudar o estilo usando, o useAnimatedStyle
+
+- Crie, o objeto comas estilizações:
+
+```bash
+ const style = useAnimatedStyle(() => {
+    return {
+      width: `${sharedProgress.value}%`,
+    };
+  });
+```
+
+- Usaremos o useSharedValue que é um estado para animação, fazemo o import e :
+
+```bash
+const sharedProgress = useSharedValue(progress);
+```
+
+- Animar a largura:
+
+```bash
+width: `${sharedProgress.value}%`,
+```
+- E passamos o estilo na view:
+
+```bash
+style={style}
+```
+
+- Usarems o Useeffect para aplicar a renderização, 1° fazeos o import e depois:
+
+```bash
+  useEffect(() => {
+    sharedProgress.value = withTiming(progress);
+  }, [progress]);
+```
+Aplicar a animação com o withTiming dentro do useEffect.
 
 ## Animar o Checkbox -->
 
+- Fazer o import:
+
+```bash
+import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated';
+```
+- Aplicar na view do checkbox aplicando o `Animated.View`, quando marcar aplicar a animação de entrada e saída:
+
+```bash
+//com a propriedadena view:
+
+          entering={ZoomIn}
+          exiting={ZoomOut}
+```
 
 ## Testando tudo
-
-
