@@ -65,14 +65,14 @@ app.get('/day', async (request) => {
 
     const completedHabits = day?.dayHabits.map(dayHabit => {
         return dayHabit.habit_id
-    })
+    })??[];
 
     return {
         possibleHabits,
         completedHabits,
     }
 })
-
+ // Completar / não completar um hábito
 app.patch('/habits/:id/toggle', async (request) => {
     const toggleHabitParams = z.object({
         id: z.string().uuid()
@@ -121,30 +121,34 @@ app.patch('/habits/:id/toggle', async (request) => {
     }
 })
 
+ // Resumo dos hábitos
 app.get('/summary', async () => {
+    // SQL na mão -> (RAW)
     const summary = await prisma.$queryRaw`
-    SELECT 
-        D.id, 
+        SELECT
+        D.id,
         D.date,
         (
-        SELECT 
+            SELECT
             cast(count(*) as float)
-        FROM day_habits DH
-        WHERE DH.day_id = D.id
+            FROM
+            day_habits DH
+        WHERE
+            DH.day_id = D.id
         ) as completed,
         (
-        SELECT
+            SELECT
             cast(count(*) as float)
-        FROM habit_week_days HDW
-        JOIN habits H
-            ON H.id = HDW.habit_id
+            FROM habit_week_days HWD
+            JOIN habits H
+            ON H.id = HWD.habit_id
         WHERE
-            HDW.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
-            AND H.created_at <= D.date
+            HWD.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as Int)
+            AND H.created_at <= D.date -- Validando que o hábito tenha sido criado antes ou no mesmo dia que a data específica
         ) as amount
-        FROM days D
-    `
+    FROM days D
+    `;
 
-    return summary
-})
+    return summary;
+});
 }

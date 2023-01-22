@@ -51,9 +51,15 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://efficien
 ![](img/banner1.png)
 
 <!-- ![](/img/habits.png) -->
-
-![](https://streamable.com/3pcted)
-### Assistir ao video da versão mobile
+<br>
+<br>
+<br>
+<video width="219" height="454" controls="controls" autoplay="autoplay">
+<source src="https://streamable.com/3pcted" type="video/mp4">
+<object data="" width="219" height="240">
+<embed width="320" height="454" src="https://streamable.com/3pcted">
+</object>
+</video>
 
 
 ## Deploy do projeto
