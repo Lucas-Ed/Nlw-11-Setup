@@ -1214,3 +1214,33 @@ import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated';
 ```
 
 ## Testando tudo
+
+
+## Extra  build
+
+1° Instalar o cli expo
+
+```bash
+npm install -g eas-cli
+```
+
+2° Fazer login na sua conta expo:
+
+```bash
+eas login
+```
+3° Gerar o arquivo eas.json:
+
+```bash
+eas build:configure
+```
+ selecione ios ou android.
+
+
+ 4° Rode o comando para fazer o build:
+
+ ```bash
+eas build
+```
+
+5° Assim que a compilação estiver concluída, execute eas submit para carregar o aplicativo nas lojas de aplicativos.

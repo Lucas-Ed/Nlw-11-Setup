@@ -2,6 +2,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import { Check } from "phosphor-react";
 import { FormEvent, useState } from "react";
 import { api } from "../lib/axios";
+import Swal from 'sweetalert2'
 
 const availableWeekDays = [
     "Domingo",
@@ -29,7 +30,22 @@ async function createNewHabit(event: FormEvent) {
     setTitle("");
     setWeekDays([]);
 
-    alert("Hábito criado com sucesso!");
+    // alert("Hábito criado com sucesso!");
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    Toast.fire({
+        icon: 'success',
+        title: 'Hábito criado com sucesso!'
+    })
 }
 
 function handleToggleWeekDay(weekDay: number) {
@@ -43,7 +59,7 @@ function handleToggleWeekDay(weekDay: number) {
 }
 
 return (
-    <form onSubmit={createNewHabit} className="w-full flex flex-col mt-6">
+    <form onSubmit={createNewHabit} className="w-full min-h-scren flex flex-col mt-6">
         <label className="font-semibold leading-tight" htmlFor="title">
         Qual seu comprometimento?
         </label>
@@ -57,7 +73,7 @@ return (
         onChange={(event) => setTitle(event.target.value)}
     />
 
-    <label className="w-full flex flex-col mt-6" htmlFor="">
+    <label className="w-full min-h-scren flex flex-col mt-6" htmlFor="">
         Qual a recorrência?
     </label>
 

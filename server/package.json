@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.2.0",
     "@prisma/client": "^4.8.1",
-    "cors": "^2.8.5",
     "dayjs": "^1.11.7",
     "fastify": "^4.11.0",
     "fastify-cors": "^6.1.0",
