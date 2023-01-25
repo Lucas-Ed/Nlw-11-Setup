@@ -7,7 +7,7 @@ const app = Fastify();
 // app.register(cors);
 app.register(cors, {
     origin: ["http://localhost:5173"]
-  });
+});
 app.register(appRoutes);
 
 app.listen({

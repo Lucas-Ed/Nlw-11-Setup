@@ -19,7 +19,7 @@ app.post('/habits', async (request) => {
     await prisma.habit.create({
         data: {
         title,
-        createdAt: today,
+        created_at: today,
         weekDays: {
         create: weekDays.map((weekDay) => {
             return {
@@ -43,7 +43,7 @@ app.get('/day', async (request) => {
 
     const possibleHabits = await prisma.habit.findMany({
     where: {
-            createdAt: {
+            created_at: {
                 lte: date,
         },
         weekDays: {

@@ -52,7 +52,10 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://efficien
 
 <!-- ![](/img/habits.png) -->
 <br>
-<br>
+<!--![](img/app.gif) -->
+
+<iframe width="219" height="454" src="https://streamable.com/3pcted" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<!--<br>
 <br>
 <video width="219" height="454" controls="controls" autoplay="autoplay">
 <source src="https://streamable.com/3pcted" type="video/mp4">
@@ -60,6 +63,7 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://efficien
 <embed width="320" height="454" src="https://streamable.com/3pcted">
 </object>
 </video>
+-->
 
 
 ## Deploy do projeto

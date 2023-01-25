@@ -1,57 +1,3 @@
-// import { PrismaClient } from "@prisma/client";
-
-// const prisma = new PrismaClient();
-
-// async function main() {
-//   // Create Habits
-// const habit1 = await prisma.habit.create({
-//     data: {
-//         title: "Meditar",
-//         createdAt: new Date(),
-//         weekDays: {
-//         create: [{ week_day: 1 }, { week_day: 4 }, { week_day: 6 }],
-//     },
-//     },
-// });
-// const habit2 = await prisma.habit.create({
-//     data: {
-//         title: "Correr",
-//         createdAt: new Date(),
-//         weekDays: {
-//         create: [{ week_day: 2 }, { week_day: 5 }],
-//     },
-//     },
-// });
-
-//   // Create Days
-// const day1 = await prisma.day.create({
-//     data: {
-//         date: new Date(),
-//         dayHabits: {
-//         create: [
-//             { habit: { connect: { id: habit1.id } } },
-//             { habit: { connect: { id: habit2.id } } },
-//         ],
-//     },
-//     },
-// });
-// const day2 = await prisma.day.create({
-//     data: {
-//         date: new Date(),
-//         dayHabits: {
-//         create: [{ habit: { connect: { id: habit1.id } } }],
-//     },
-//     },
-// });
-// console.log("Seed created!");
-// }
-
-// main()
-// .catch((e) => console.error(e))
-// .finally(async () => {
-//     await prisma.$disconnect();
-// });
-///-2
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -79,7 +25,7 @@ await Promise.all([
         data: {
         id: firstHabitId,
         title: 'Beber 2L água',
-        createdAt: firstHabitCreationDate,
+        created_at: firstHabitCreationDate,
         weekDays: {
             create: [{ week_day: 1 }, { week_day: 2 }, { week_day: 3 }],
         },
@@ -90,7 +36,7 @@ await Promise.all([
         data: {
         id: secondHabitId,
         title: 'Exercitar',
-        createdAt: secondHabitCreationDate,
+        created_at: secondHabitCreationDate,
         weekDays: {
             create: [{ week_day: 3 }, { week_day: 4 }, { week_day: 5 }],
         },
@@ -101,7 +47,7 @@ await Promise.all([
         data: {
         id: thirdHabitId,
         title: 'Dormir 8h',
-        createdAt: thirdHabitCreationDate,
+        created_at: thirdHabitCreationDate,
         weekDays: {
             create: [
             { week_day: 1 },
