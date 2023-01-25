@@ -54,7 +54,7 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://efficien
 <br>
 <!--![](img/app.gif) -->
 
-<iframe width="219" height="454" src="https://streamable.com/3pcted" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[](https://streamable.com/3pcted)
 <!--<br>
 <br>
 <video width="219" height="454" controls="controls" autoplay="autoplay">
