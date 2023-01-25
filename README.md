@@ -52,9 +52,7 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://efficien
 
 <!-- ![](/img/habits.png) -->
 <br>
-<!--![](img/app.gif) -->
-
-[](https://streamable.com/3pcted)
+![](img/app.gif)
 <!--<br>
 <br>
 <video width="219" height="454" controls="controls" autoplay="autoplay">
